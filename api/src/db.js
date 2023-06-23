@@ -12,7 +12,12 @@ const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}
 DogsModel (sequelize); 
 TemperamentModel (sequelize); 
 
+const {Dog, Temperament} = sequelize.models; 
+
+Dog.belongsToMany(Temperament, {through: "Dog_Temperament"}); 
+Temperament.belongsToMany(Dog, {through: "Dog_Temperament"}); 
 
 
 
-module.exports = {sequelize}
+
+module.exports = {sequelize, ...sequelize.models}; 
