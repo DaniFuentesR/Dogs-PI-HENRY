@@ -18,12 +18,12 @@ module.exports = (sequelize) => {
       allowNull: false
     }, 
 
-    height: {
+    height_cms: {
       type: DataTypes.STRING,
       allowNull: false
     }, 
 
-    weight: {
+    weight_kg: {
       type: DataTypes.STRING,
       allowNull: false, 
     },
