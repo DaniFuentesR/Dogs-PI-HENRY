@@ -11,7 +11,7 @@ arr.map ((elem) => {
     return {
         id: elem.id,
         name: elem.name, 
-        image: elem.image?.url,
+        image: elem.image.url,
         height_cms: elem.height.metric,
         weight_kg: elem.weight.metric,
         lifeSpan: elem.life_span, 
@@ -21,44 +21,63 @@ arr.map ((elem) => {
     
 })
 
-
+        
 const getAllDogs = async () => {
     
-        const dataBaseDogs = await Dog.findAll(); 
+    const dataBaseDogs = await Dog.findAll(); 
     
-        const url = "https://api.thedogapi.com/v1/breeds"; 
-        const requestUrl = `${url}?api_key=${API_KEY}`; 
-
-        const apiDogsRaw = (await axios.get(requestUrl)).data; 
-        
-        const apiDogsClean = cleanArrayDogs (apiDogsRaw); 
-        
+    const url = "https://api.thedogapi.com/v1/breeds"; 
+    const requestUrl = `${url}?api_key=${API_KEY}`; 
+    
+    const apiDogsRaw = (await axios.get(requestUrl)).data; 
+    
+    const apiDogsClean = cleanArrayDogs (apiDogsRaw); 
+    
         return [...dataBaseDogs, ... apiDogsClean]; 
     }; 
     
     
-    const getDogById = async (id, source) => {
-
+const getDogById = async (id, source) => {
+    
+        const cleanArrayDogsById = (arr) => 
+    
+        arr.map ((elem) => {
+            return {
+            id: elem.id,
+            name: elem.name, 
+            image: `https://api.thedogapi.com/v1/images/${elem.reference_image_id}`,
+            height_cms: elem.height.metric,
+            weight_kg: elem.weight.metric,
+            lifeSpan: elem.life_span, 
+            created: false, 
+        };
+    });     
+    
         const cleanData = []; 
-
+    
        const url = `https://api.thedogapi.com/v1/breeds/${id}`;
        const requestUrl= `${url}?api_key=${API_KEY}`; 
     
         const apiDataRaw = (await axios.get (requestUrl)).data; 
-
+    
         cleanData.push(apiDataRaw); 
-
+    
+    
         const dataDogsClean = source === "API" ? 
-        await cleanArrayDogs(cleanData) : 
+    
+        await cleanArrayDogsById(cleanData) : 
+    
         await Dog.findByPk(id, {
             include: {
                 model: Temperament, 
-                attributes: [id, name]
+                attributes: ["id", "name"],
+                through: {attributes: []},
             }
         })
+        
+        return dataDogsClean; 
+    }; 
 
-        return [...dataDogsClean]; 
-}; 
 
 const getDogByName = async (name) => {
 
@@ -70,8 +89,11 @@ const getDogByName = async (name) => {
                 [Op.or]: [{name: {[Op.iLike]:`%${name}$%`}}]                   
             }
         }); 
+    
+    const url = "https://api.thedogapi.com/v1/breeds"
+    const requestUrl = `${url}?api_key=${API_KEY}`
+    const apiDogsRaw = (await axios.get(requestUrl)).data; 
 
-    const apiDogsRaw = (await axios.get("https://api.thedogapi.com/v1/breeds")).data; 
     const apiDogs = cleanArrayDogs(apiDogsRaw); 
     const regex = new RegExp(name, "i"); 
 
@@ -83,10 +105,9 @@ const getDogByName = async (name) => {
 }; 
 
 
-const createDog = async (id, name, image, height_cms, weight_kg, lifeSpan, temperament) => {
+const createDog = async (id, name, image, height_cms, weight_kg, lifeSpan) => {
 
-    const newDog = await Dog.create({id, name, image, height_cms, weight_kg, lifeSpan, temperament});
-
+    const newDog = await Dog.create({id, name, image, height_cms, weight_kg, lifeSpan});
 
     return newDog
 

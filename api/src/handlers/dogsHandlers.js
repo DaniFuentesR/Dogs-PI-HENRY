@@ -1,4 +1,5 @@
 const {getDogByName, getAllDogs, getDogById, createDog, deleteDog} = require ("../controllers/dogsControllers"); 
+const {Temperament} = require ("../db"); 
 
 
 const getDogsHandler = async (req, res) => {
@@ -22,12 +23,12 @@ const getDogsHandler = async (req, res) => {
 
 const getDogByIdHandler = async (req, res) => {
 
-    const {id} = req.params;
+    const {id, imageId} = req.params;
 
     const source = isNaN(id) ? "BDD" : "API"
 
     try {
-        const dogById = await getDogById(id, source); 
+        const dogById = await getDogById(id, source, imageId); 
         res.status(200).json(dogById); 
     } catch (error) {
         res.status(400).json({error: error.message}); 
@@ -36,10 +37,13 @@ const getDogByIdHandler = async (req, res) => {
 
 const createDogHandler = async (req, res) => {
 
-    const {id, name, image, height_cms, weight_kg, lifeSpan} = req.body; 
+    const {id, name, image, height_cms, weight_kg, lifeSpan, temperamentId} = req.body; 
 
     try {
-        const newDog = await createDog(id, name, image, height_cms, weight_kg, lifeSpan);
+        const newDog = await createDog (id, name, image, height_cms, weight_kg, lifeSpan);
+        const temperaments = await Temperament.findAll({where: {id: temperamentId}}); 
+        await newDog.addTemperaments(temperaments)
+
         res.status(201).json(newDog); 
     } catch (error) {
         res.status(400).json({error: error.message})

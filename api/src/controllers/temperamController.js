@@ -24,6 +24,8 @@ const getTemperaments = async () => {
         name: temperament
     })); 
 
+    temperaments.sort((a, b) => a.id - b.id)
+
     return [...new Set (temperaments)]; 
 };
 
