@@ -1,31 +1,35 @@
 const axios = require ("axios"); 
 const {Dog, Temperament} = require ("../db"); 
 const {Op} = require ("sequelize"); 
-const { name } = require("../app");
+const {API_KEY} = process.env; 
+
 
 
 const cleanArrayDogs = (arr) => 
 
-    arr.map ((elem) => {
-        return {
-            id: elem.id,
-            name: elem.name, 
-            image: elem.image?.url,
-            height_cms: elem.height.metric,
-            weight_kg: elem.weight.metric,
-            lifeSpan: elem.life_span, 
-            created: false, 
-        }
-
-
-    })
+arr.map ((elem) => {
+    return {
+        id: elem.id,
+        name: elem.name, 
+        image: elem.image?.url,
+        height_cms: elem.height.metric,
+        weight_kg: elem.weight.metric,
+        lifeSpan: elem.life_span, 
+        created: false, 
+    }
     
     
-    const getAllDogs = async () => {
-        
+})
+
+
+const getAllDogs = async () => {
+    
         const dataBaseDogs = await Dog.findAll(); 
-        
-        const apiDogsRaw = (await axios.get("https://api.thedogapi.com/v1/breeds")).data; 
+    
+        const url = "https://api.thedogapi.com/v1/breeds"; 
+        const requestUrl = `${url}?api_key=${API_KEY}`; 
+
+        const apiDogsRaw = (await axios.get(requestUrl)).data; 
         
         const apiDogsClean = cleanArrayDogs (apiDogsRaw); 
         
@@ -36,8 +40,11 @@ const cleanArrayDogs = (arr) =>
     const getDogById = async (id, source) => {
 
         const cleanData = []; 
+
+       const url = `https://api.thedogapi.com/v1/breeds/${id}`;
+       const requestUrl= `${url}?api_key=${API_KEY}`; 
     
-        const apiDataRaw = (await axios.get (`https://api.thedogapi.com/v1/breeds/${id}`)).data; 
+        const apiDataRaw = (await axios.get (requestUrl)).data; 
 
         cleanData.push(apiDataRaw); 
 
@@ -76,8 +83,15 @@ const getDogByName = async (name) => {
 }; 
 
 
-const createDog = async (id, name, image, height_cms, weight_kg, lifeSpan) => await Dog.create({id, name, image, height_cms, weight_kg, lifeSpan})
+const createDog = async (id, name, image, height_cms, weight_kg, lifeSpan, temperament) => {
 
+    const newDog = await Dog.create({id, name, image, height_cms, weight_kg, lifeSpan, temperament});
+
+
+    return newDog
+
+
+}
 
 const deleteDog = async (id) => {
     const dogToDelete = await Dog.findByPk(id);

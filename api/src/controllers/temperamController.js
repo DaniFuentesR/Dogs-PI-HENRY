@@ -1,25 +1,35 @@
 const axios = require ("axios"); 
 const {Temperament} = require ("../db"); 
 
+
 const getTemperaments = async () => {
 
-    const allTemperaments = []; 
+    
 
     const response = await axios.get("https://api.thedogapi.com/v1/breeds");
     const url = response.data
 
-    url.map ((dog) => {
-        
-        let infoDogs = {
+    const infoDogs = url.map ((dog) => dog.temperament); 
+    
 
-            id: dog.id,
-            name: dog.temperament
-        }
-        allTemperaments.push(infoDogs)
-    })
+    const allTemperaments = infoDogs.join(", "); 
 
-        return[...new Set (allTemperaments)]; 
+    
+    const temperamentsFiltered = [...new Set (allTemperaments.split(", "))]; 
+
+
+    const temperaments = temperamentsFiltered.map((temperament, index) => ({
+
+        id: index + 1, 
+        name: temperament
+    })); 
+
+    return [...new Set (temperaments)]; 
 };
+
+
+
+
 
 
 const getTemperamentsFromDb = async () => {
