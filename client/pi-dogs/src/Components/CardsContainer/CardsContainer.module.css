@@ -1,0 +1,14 @@
+.Container {
+    margin-top: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color:rgb(173, 136, 136);
+    display: flex;
+    justify-content:center; 
+    border: 1px solid black;
+    flex-direction: row;
+    border-radius: 15px;
+    flex-wrap: wrap;
+    gap: 20px; 
+    padding: 15px; 
+}

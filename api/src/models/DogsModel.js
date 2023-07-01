@@ -29,15 +29,16 @@ module.exports = (sequelize) => {
       allowNull: false, 
     },
 
+    
     lifeSpan: {
       type: DataTypes.STRING,
       allowNull: false, 
     }, 
-
+    
     created: {
       type: DataTypes.BOOLEAN, 
       defaultValue: true
-    }
+    },
   },
     {timestamps: false}  
   );

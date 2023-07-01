@@ -14,6 +14,7 @@ arr.map ((elem) => {
         image: elem.image.url,
         height_cms: elem.height.metric,
         weight_kg: elem.weight.metric,
+        temperament: elem.temperament,
         lifeSpan: elem.life_span, 
         created: false, 
     }
@@ -24,7 +25,11 @@ arr.map ((elem) => {
         
 const getAllDogs = async () => {
     
-    const dataBaseDogs = await Dog.findAll(); 
+    const dataBaseDogs = await Dog.findAll({include: {
+        model: Temperament, 
+        attributes: ["name"],
+        through: {attributes: []},
+    }}); 
     
     const url = "https://api.thedogapi.com/v1/breeds"; 
     const requestUrl = `${url}?api_key=${API_KEY}`; 
@@ -70,13 +75,16 @@ const getDogById = async (id, source) => {
         await Dog.findByPk(id, {
             include: {
                 model: Temperament, 
-                attributes: ["id", "name"],
+                attributes: ["name"],
                 through: {attributes: []},
             }
         })
         
-        return dataDogsClean; 
-    }; 
+    
+        return dataDogsClean
+}
+
+
 
 
 const getDogByName = async (name) => {
