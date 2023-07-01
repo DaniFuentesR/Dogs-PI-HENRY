@@ -37,11 +37,6 @@ const Home = () => {
             setItemsFiltered([...dogsFiltered].splice(firstIndex,ITEMS_PER_PAGE));
             setCurrentPage(next_page);
         }
-
-        if(firstIndex >= dogs.length) return; 
-
-        setItems([...dogs].splice(firstIndex, ITEMS_PER_PAGE)); 
-        setCurrentPage(next_page); 
     };
 
 
