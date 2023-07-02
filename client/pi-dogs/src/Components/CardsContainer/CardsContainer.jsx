@@ -14,11 +14,14 @@ const CardsContainer = ({dogs}) => {
             {dogs.map((dog)=>{
 
                 return <Card
-        
+                
+                id={dog.id}
                 name = {dog.name}
                 image= {dog.image}
+                height_cms={dog.height_cms}
                 weight_kg = {dog.weight_kg}
                 temperament = {dog.temperament}
+                lifeSpan={dog.lifeSpan}
                 />
  
             })}

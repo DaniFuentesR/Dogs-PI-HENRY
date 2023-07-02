@@ -8,10 +8,6 @@ const initialState = {
     temperaments: []
 }; 
 
-// const filteredDogByTemperament = (dogs, temperament) => {
-
-//     return dogs.filter((dog)=> dog.temperament && dog.temperament.toLowerCase().includes(temperament.toLowerCase())); 
-// }; 
 
 const filteredDogByCreation = (dogs, created) => {
     return dogs.filter((dog) => dog.created === created)
@@ -27,19 +23,12 @@ const rootReducer = (state = initialState, action) => {
         case GET_DOG_BY_ID:
          return {...state, dogs: action.payload}; 
 
-        // case FILTER_TEMPERAMENT:
-        //  return {
-        //     ...state, 
-        //     filter: true,
-        //     dogsFiltered: filteredDogByTemperament([...state.dogs], action.payload)
-            
-        // }
 
         case FILTER_TEMPERAMENT:
             return {
                 ...state,
                 filter: true,
-                dogsFiltered: [...state.dogs].filter((dog) => action.payload.every((temperament) =>dog.temperament && dog.temperament.toLowerCase().includes(temperament.toLowerCase()))
+                dogsFiltered: [...state.dogs].filter((dog) => action.payload.every((temperament)=> dog.temperament && dog.temperament.toLowerCase().includes(temperament.toLowerCase()))
             ),
         };
 

@@ -6,6 +6,7 @@ import SearchBar from "../SearchBar/SearchBar";
 
 const  NavBar = ({onSearch}) => {
 
+
     const dispatch = useDispatch(); 
 
     const clearFiltersHandler = () => {
