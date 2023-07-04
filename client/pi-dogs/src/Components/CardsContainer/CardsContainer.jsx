@@ -15,6 +15,7 @@ const CardsContainer = ({dogs}) => {
 
                 return <Card
                 
+                key={dog.id}
                 id={dog.id}
                 name = {dog.name}
                 image= {dog.image}
@@ -28,4 +29,5 @@ const CardsContainer = ({dogs}) => {
         </div>
     )
 }; 
- export default CardsContainer; 
+
+export default CardsContainer; 

@@ -44,6 +44,8 @@ const getTemperamentsFromDb = async () => {
 
     const getAllTemperaments = await Temperament.findAll(); 
     return getAllTemperaments; 
+
+ 
 }
 
 module.exports = getTemperamentsFromDb; 

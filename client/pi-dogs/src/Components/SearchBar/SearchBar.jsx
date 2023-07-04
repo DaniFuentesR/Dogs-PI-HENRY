@@ -1,21 +1,30 @@
-import { useState } from "react";
 import style from "./searchBar.module.css"
+import {useState} from "react"
+import {useDispatch} from "react-redux"
+import {searchDog} from "../../Redux/actions.js"
 
 
 
-export default function SearchBar({onSearch}) {
+export default function SearchBar() {
+   
 
-   let [name, setName] = useState (""); 
 
-const handleChange = (event) => {
-    const value = event.target.value; 
-   setName (value)
-}
+   const [dogSearch, setDogSearch] = useState("")
+   const dispatch = useDispatch(); 
+
+   const handlerSearch = () => {
+      dispatch(searchDog(dogSearch)); 
+      
+   
+   }
+
+
+
 
    return (
       <div className={style.SearchBar}>
-         <input type='search' value={name} onChange={handleChange} placeholder="Nombre Raza"/>
-        <button onClick={() => onSearch (name)}>Buscar Raza</button>
+         <input type='text'  value={dogSearch} onChange={(e)=> setDogSearch(e.target.value)} placeholder="Buscar Raza"/>
+        <button onClick={handlerSearch}>Buscar</button>
       </div>
    );
 }

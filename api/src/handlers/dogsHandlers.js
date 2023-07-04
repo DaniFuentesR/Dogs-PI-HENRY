@@ -42,7 +42,8 @@ const createDogHandler = async (req, res) => {
     try {
         const newDog = await createDog (id, name, image, height_cms, weight_kg, lifeSpan);
         const temperaments = await Temperament.findAll({where: {id: temperamentId}}); 
-        await newDog.addTemperaments(temperaments)
+        await newDog.addTemperaments(temperaments);
+        
 
         res.status(201).json(newDog); 
     } catch (error) {

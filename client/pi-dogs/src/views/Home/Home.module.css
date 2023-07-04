@@ -1,0 +1,18 @@
+.Home {
+    background-color: rgb(140, 131, 119);
+}
+
+.buttonPrev button{
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #48260a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .buttonPrev button:hover {
+    background-color: #ff8f00;
+  }

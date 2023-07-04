@@ -79,6 +79,8 @@ const getDogById = async (id, source) => {
                 through: {attributes: []},
             }
         })
+
+
         
     
         return dataDogsClean
@@ -94,7 +96,7 @@ const getDogByName = async (name) => {
         { 
             where:{
             
-                [Op.or]: [{name: {[Op.iLike]:`%${name}$%`}}]                   
+                [Op.or]: [{name: {[Op.iLike]:`%${name}%`}}]                   
             }
         }); 
     
@@ -113,9 +115,9 @@ const getDogByName = async (name) => {
 }; 
 
 
-const createDog = async (id, name, image, height_cms, weight_kg, lifeSpan) => {
+const createDog = async (id, name, image, height_cms, weight_kg, lifeSpan, temperamentId) => {
 
-    const newDog = await Dog.create({id, name, image, height_cms, weight_kg, lifeSpan});
+    const newDog = await Dog.create({id, name, image, height_cms, weight_kg, lifeSpan, temperamentId});
 
     return newDog
 
