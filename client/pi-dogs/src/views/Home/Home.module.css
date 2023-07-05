@@ -1,5 +1,6 @@
 .Home {
     background-color: rgb(140, 131, 119);
+    
 }
 
 .buttonPrev button{
@@ -15,4 +16,42 @@
   
   .buttonPrev button:hover {
     background-color: #ff8f00;
+  }
+
+  .filtersContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .filtersContainer label {
+    margin-right: 10px;
+  }
+  
+  .filtersContainer input[type="text"],
+  .filtersContainer select {
+    padding: 5px;
+  }
+  
+  .filtersContainer button {
+    padding: 8px 12px;
+    background-color: #a7a454;
+    color: #040404;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .filtersContainer button:disabled {
+    background-color: #999999;
+    cursor: not-allowed;
+  }
+  
+  .filterType {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .resetButton {
+    margin-left: 10px;
   }

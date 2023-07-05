@@ -35,21 +35,28 @@ const getDogByIdHandler = async (req, res) => {
     }
 }; 
 
+
 const createDogHandler = async (req, res) => {
-
-    const {id, name, image, height_cms, weight_kg, lifeSpan, temperamentId} = req.body; 
-
+    const { name, image, height_min_cms, height_max_cms, weight_min_kg, weight_max_kg, lifeSpan, temperaments} = req.body;
+  
     try {
-        const newDog = await createDog (id, name, image, height_cms, weight_kg, lifeSpan);
-        const temperaments = await Temperament.findAll({where: {id: temperamentId}}); 
-        await newDog.addTemperaments(temperaments);
-        
+      const newDog = await createDog(
+        name,
+        image,
+        height_min_cms,
+        height_max_cms,
+        weight_min_kg,
+        weight_max_kg,
+        lifeSpan,
+      );
 
-        res.status(201).json(newDog); 
+      const temperamentBd = await Temperament.findAll({where: {name: temperaments}})
+      await newDog.addTemperament(temperamentBd);
+      res.status(201).json("Perro creado con éxito");
     } catch (error) {
-        res.status(400).json({error: error.message})
+      res.status(400).json({ error: "Error al crear el Perro" });
     }
-};
+  };
 
 const dogToDeleteHandler = async (req, res) => {
 

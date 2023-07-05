@@ -23,7 +23,7 @@ export default function SearchBar() {
 
    return (
       <div className={style.SearchBar}>
-         <input type='text'  value={dogSearch} onChange={(e)=> setDogSearch(e.target.value)} placeholder="Buscar Raza"/>
+         <input type='search'  value={dogSearch} onChange={(e)=> setDogSearch(e.target.value)} placeholder="Inserte nombre"/>
         <button onClick={handlerSearch}>Buscar</button>
       </div>
    );

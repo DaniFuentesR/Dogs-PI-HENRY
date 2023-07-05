@@ -14,37 +14,9 @@ const Home = () => {
     const filter = useSelector ((state)=>state.filter)
     const [temperaments, setTemperaments] = useState(""); 
     const [filterType, setFilterType] = useState(""); 
-    const [orderOption, setOrderOption] = useState(""); 
 
 
     // ORDENAMIENTO /> 
-
-    // const handlerOrder = (event) => {
-    //     const {value} = event.target; 
-    //     setOrderOption(value); 
-
-    //     if(value === "weight") {
-    //         if (filter) {
-    //             const itemsOrdered = [...dogsFiltered].sort((a,b)=>b.weight_kg - a.weight_kg)
-    //             setItemsFiltered(itemsOrdered)
-    //         } else {
-    //             const itemsOrdered = [...dogsFiltered].sort((a,b)=>b.weight_kg - a.weight_kg)
-    //             setItems(itemsOrdered)
-    //         }
-    //     } else if (value === "name"){
-    //         if (filter) {
-    //             const itemsOrdered = 
-    //             setItemsFiltered([...dogsFiltered].sort((a, b) => a.name.localeCompare(b.name)))
-    //         } else {
-    //             setItems([...dogs].sort((a,b)=>a.name.localeCompare(b.name)))
-    //         }
-    //     }
-    // }; 
-
-
-
-
-
 
 
 
@@ -152,9 +124,9 @@ const Home = () => {
     return (
         <>
        
-        <h1>All DOGS AT HOME</h1>
         
-        <div>
+        <h1>All DOGS AT HOME</h1>
+        <div className={style.filtersContainer}>
             
             <button onClick={filtersTemperament} disabled={isFilterButtonDisabled}> Filtrar Temperamentos </button>
 
@@ -167,13 +139,6 @@ const Home = () => {
             <button onClick={resetFilter}>Limpiar Filtros</button>
                 {filterType && <p>{filterType}</p>}
 
-            <select value={orderOption}>
-
-                <option value="">Ordenar por</option>
-                <option value="weight">Peso</option>
-                <option value="name">Nombre</option>
-
-            </select>
 
         </div>
 

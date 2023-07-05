@@ -1,0 +1,49 @@
+.landingPage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: url("../../GlobalCss/HD-wallpaper-d-caine-collage-funny-dog-face.jpeg");
+  }
+  
+  .frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .frame h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #010101;
+    text-align: center;
+  }
+  
+  .frame p {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #666;
+    text-align: center;
+  }
+  
+  .frame button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #48260a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .frame button:hover {
+    background-color: #ff8f00;
+  }

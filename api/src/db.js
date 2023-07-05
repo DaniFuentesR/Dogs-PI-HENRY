@@ -4,7 +4,7 @@ const {DB_USER, DB_PASSWORD, DB_HOST} = process.env;
 const DogsModel = require ("./models/DogsModel"); 
 const TemperamentModel = require ("./models/TempModel"); 
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/dogs`, {
+const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/dogss`, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });

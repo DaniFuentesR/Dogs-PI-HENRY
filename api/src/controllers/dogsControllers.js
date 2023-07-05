@@ -12,15 +12,18 @@ arr.map ((elem) => {
         id: elem.id,
         name: elem.name, 
         image: elem.image.url,
-        height_cms: elem.height.metric,
-        weight_kg: elem.weight.metric,
-        temperament: elem.temperament,
+        height_min_cms: parseInt(elem.height.metric.split("-")[0]),
+        height_max_cms: parseInt(elem.height.metric.split("-")[1]),
+        weight_min_kg: parseInt(elem.height.metric.split("-")[0]),
+        weight_max_kg: parseInt(elem.height.metric.split("-")[1]),
         lifeSpan: elem.life_span, 
         created: false, 
+        temperament: elem.temperament? elem.temperament.split(", ").join(", "):["No tiene temperamento"],
     }
     
     
 })
+
 
         
 const getAllDogs = async () => {
@@ -30,6 +33,22 @@ const getAllDogs = async () => {
         attributes: ["name"],
         through: {attributes: []},
     }}); 
+
+        let response = await dataBaseDogs.map(dog => {
+        return {
+            id: dog.id,
+            name: dog.name,
+            image: dog.image,
+            height_min_cms: dog.height_min_cms,
+            height_max_cms: dog.height_max_cms,
+            weight_min_kg: dog.weight_min_kg,
+            weight_max_kg: dog.weight_max_kg,
+            lifeSpan: dog.lifeSpan,
+            temperament: dog.Temperaments? dog.Temperaments.map((temperament=>temperament.name)).join(", "): "",
+            created: dog.created
+      }
+    })
+
     
     const url = "https://api.thedogapi.com/v1/breeds"; 
     const requestUrl = `${url}?api_key=${API_KEY}`; 
@@ -38,27 +57,33 @@ const getAllDogs = async () => {
     
     const apiDogsClean = cleanArrayDogs (apiDogsRaw); 
     
-        return [...dataBaseDogs, ... apiDogsClean]; 
-    }; 
+
+    return [...response, ...apiDogsClean]; 
+}; 
     
     
 const getDogById = async (id, source) => {
     
-        const cleanArrayDogsById = (arr) => 
-    
+    const cleanArrayDogsById = (arr) => 
+
         arr.map ((elem) => {
             return {
-            id: elem.id,
-            name: elem.name, 
-            image: `https://api.thedogapi.com/v1/images/${elem.reference_image_id}`,
-            height_cms: elem.height.metric,
-            weight_kg: elem.weight.metric,
-            lifeSpan: elem.life_span, 
-            created: false, 
-        };
-    });     
+                id: elem.id,
+                name: elem.name, 
+                image: elem.image.url,
+                height_min_cms: parseInt(elem.height.metric.split("-")[0]),
+                height_max_cms: parseInt(elem.height.metric.split("-")[1]),
+                weight_min_kg: parseInt(elem.height.metric.split("-")[0]),
+                weight_max_kg: parseInt(elem.height.metric.split("-")[1]),
+                lifeSpan: elem.life_span, 
+                created: false, 
+                temperament: elem.temperament? elem.temperament.split(", "):["No tiene temperamento"],
+    }
     
-        const cleanData = []; 
+    
+})  
+    
+       const cleanData = []; 
     
        const url = `https://api.thedogapi.com/v1/breeds/${id}`;
        const requestUrl= `${url}?api_key=${API_KEY}`; 
@@ -79,11 +104,9 @@ const getDogById = async (id, source) => {
                 through: {attributes: []},
             }
         })
-
-
         
     
-        return dataDogsClean
+        return dataDogsClean; 
 }
 
 
@@ -97,8 +120,15 @@ const getDogByName = async (name) => {
             where:{
             
                 [Op.or]: [{name: {[Op.iLike]:`%${name}%`}}]                   
-            }
-        }); 
+            },
+
+            include: {
+                model: Temperament, 
+                attributes: ["name"],
+                through: {attributes: []},
+    }}); 
+
+            
     
     const url = "https://api.thedogapi.com/v1/breeds"
     const requestUrl = `${url}?api_key=${API_KEY}`
@@ -109,20 +139,30 @@ const getDogByName = async (name) => {
 
     const filteredApi = apiDogs.filter((dog)=> regex.test(dog.name)); 
 
-    return [...dataBaseDogs, ...filteredApi]
-
-
-}; 
-
-
-const createDog = async (id, name, image, height_cms, weight_kg, lifeSpan, temperamentId) => {
-
-    const newDog = await Dog.create({id, name, image, height_cms, weight_kg, lifeSpan, temperamentId});
-
-    return newDog
-
-
+    return [...dataBaseDogs.flat(Infinity), ...filteredApi]
 }
+
+
+
+
+const createDog = async (name, image, height_min_cms, height_max_cms, weight_min_kg, weight_max_kg, lifeSpan) => {
+    
+      const newDog = await Dog.create({
+        name,
+        image,
+        height_min_cms,
+        height_max_cms,
+        weight_min_kg,
+        weight_max_kg,
+        lifeSpan,
+      });
+
+      return newDog; 
+
+  
+    
+}
+
 
 const deleteDog = async (id) => {
     const dogToDelete = await Dog.findByPk(id);

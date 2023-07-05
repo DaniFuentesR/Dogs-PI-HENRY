@@ -14,7 +14,7 @@ const Detail = () => {
 
     const location = useLocation(); 
     const {dogData} = location.state
-    const { id, name, weight_kg, height_cms, image, temperament, lifeSpan } = dogData;
+    const { id, name, weight_min_kg, weight_max_kg, height_min_cms, height_max_cms, image, temperament, lifeSpan } = dogData;
     const history = useHistory(); 
 
     const goBack = () => {
@@ -34,8 +34,10 @@ const Detail = () => {
       <p>ID: {id}</p>
         <h2>{name}</h2>
       <img src={image} alt={name} />
-      <p>Height in cms: {height_cms}</p>
-      <p>Weight in kg: {weight_kg} kg</p>
+      <p>Height Min: {height_min_cms} cms</p>
+      <p>Height Max: {height_max_cms} cms</p>
+      <p>Weight Min kg: {weight_min_kg} kg</p>
+      <p>Weight Max kg: {weight_max_kg} kg</p>
       <p>Temperament: {temperament}</p>
       <p>Lifespan: {lifeSpan}</p>
       <button onClick={goBack}>Volver</button>

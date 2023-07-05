@@ -18,13 +18,11 @@ const getTemperaments = async () => {
     const temperamentsFiltered = [...new Set (allTemperaments.split(", "))]; 
 
 
-    const temperaments = temperamentsFiltered.map((temperament, index) => ({
+    const temperaments = temperamentsFiltered.map((temperament) => ({
 
-        id: index + 1, 
+        // id: index + 1, 
         name: temperament
     })); 
-
-    temperaments.sort((a, b) => a.id - b.id)
 
     return [...new Set (temperaments)]; 
 };

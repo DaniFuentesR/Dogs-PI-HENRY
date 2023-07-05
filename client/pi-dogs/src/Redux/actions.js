@@ -5,11 +5,6 @@ export const FILTER_TEMPERAMENT = "FILTER_TEMPERAMENT"
 export const FILTER_CREATED = "FILTER_CREATED"
 export const CLEAR_FILTERS = "CLEAR_FILTERS"; 
 export const SEARCH_DOGS = "SEARCH_DOGS"; 
-export const POST_DOG = "POST_DOG"; 
-export const SORT_BREEDS_BY_NAME_ASC = 'SORT_BREEDS_BY_NAME_ASC';
-export const SORT_BREEDS_BY_NAME_DESC = 'SORT_BREEDS_BY_NAME_DESC';
-export const SORT_BREEDS_BY_WEIGHT_ASC = 'SORT_BREEDS_BY_WEIGHT_ASC';
-export const SORT_BREEDS_BY_WEIGHT_DESC = 'SORT_BREEDS_BY_WEIGHT_DESC';
 
 
 export const getDogs = () => {
@@ -18,7 +13,7 @@ export const getDogs = () => {
 
         try {
 
-        const apiData = await axios.get("http://localhost:3005/dogs/"); 
+        const apiData = await axios.get("http://localhost:3006/dogs/"); 
         const dogs = apiData.data; 
 
         dispatch(
@@ -39,7 +34,7 @@ export const getDogs = () => {
 export const searchDog = (name) => {
     return async function (dispatch) {
         try {
-            const apiData = await axios.get(`http://localhost:3005/dogs/?name=${name}`);
+            const apiData = await axios.get(`http://localhost:3006/dogs/?name=${name}`);
 
             dispatch({
                 type: SEARCH_DOGS,
@@ -86,49 +81,3 @@ export const clearFilters = () => {
     }
 }
 
-
-export const postDog = (info) => {
-    return async function (dispatch) {
-        try {
-            await axios.post("http://localhost:3005/dogs/", info)
-            alert("Usuario creado con éxito")
-            dispatch({
-                type: POST_DOG,
-                payload: ""
-        })
-        } catch (error) {
-            alert(error.response.data.error)
-        }
-        
-    }
-}
-
-
-
-export const sortBreedsByNameAsc = () => {
-    return (dispatch) => {
-      dispatch({ 
-        type: SORT_BREEDS_BY_NAME_ASC });
-    };
-  };
-  
-  export const sortBreedsByNameDesc = () => {
-    return (dispatch) => {
-      dispatch({ 
-        type: SORT_BREEDS_BY_NAME_DESC });
-    };
-  };
-  
-  export const sortBreedsByWeightAsc = () => {
-    return (dispatch) => {
-      dispatch({ 
-        type: SORT_BREEDS_BY_WEIGHT_ASC });
-    };
-  };
-  
-  export const sortBreedsByWeightDesc = () => {
-    return (dispatch) => {
-      dispatch({ 
-        type: SORT_BREEDS_BY_WEIGHT_DESC });
-    };
-  };
