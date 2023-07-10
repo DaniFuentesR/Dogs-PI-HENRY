@@ -5,7 +5,7 @@ export const FILTER_TEMPERAMENT = "FILTER_TEMPERAMENT"
 export const FILTER_CREATED = "FILTER_CREATED"
 export const CLEAR_FILTERS = "CLEAR_FILTERS"; 
 export const SEARCH_DOGS = "SEARCH_DOGS"; 
-
+export const ORDER_BY_NAME = "ORDER_BY_NAME"
 
 export const getDogs = () => {
 
@@ -78,6 +78,16 @@ export const filteredByCreation = (created) => {
 export const clearFilters = () => {
     return {
         type: CLEAR_FILTERS
+    }
+}
+
+export const orderByName = (name) => {
+    return async function (dispatch) {
+        dispatch ({
+
+            type: ORDER_BY_NAME,
+            payload: name 
+        })
     }
 }
 

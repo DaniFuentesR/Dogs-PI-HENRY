@@ -1,4 +1,4 @@
-import {GET_DOGS, FILTER_TEMPERAMENT, FILTER_CREATED, CLEAR_FILTERS, SEARCH_DOGS} from "./actions"; 
+import {GET_DOGS, FILTER_TEMPERAMENT, FILTER_CREATED, CLEAR_FILTERS, SEARCH_DOGS, ORDER_BY_NAME} from "./actions"; 
 
 const initialState = {
     
@@ -30,6 +30,7 @@ const rootReducer = (state = initialState, action) => {
 
         case FILTER_TEMPERAMENT:
             
+        
         return {
             ...state,
             filter: true,
@@ -68,7 +69,33 @@ const rootReducer = (state = initialState, action) => {
             }
 
             
-        
+        case ORDER_BY_NAME:
+
+        let sortedArr = action.payload === "asc" ?
+        state.dogs.sort (function(a,b) {
+            if(a.name > b.name) {
+                return 1
+            }
+            if(b.name > a.name) {
+                return -1
+            }
+            return 0
+        }) : 
+        state.dogs.sort (function (a, b) {
+
+            if(a.name > b.name) {
+                return -1
+            }
+            if(b.name > a.name) {
+                return 1
+            }
+            return 0
+        })
+
+            return {
+                ...state, 
+                dogs: sortedArr
+            }
 
 
         default: 

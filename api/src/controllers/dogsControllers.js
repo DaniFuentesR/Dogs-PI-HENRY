@@ -14,8 +14,8 @@ arr.map ((elem) => {
         image: elem.image.url,
         height_min_cms: parseInt(elem.height.metric.split("-")[0]),
         height_max_cms: parseInt(elem.height.metric.split("-")[1]),
-        weight_min_kg: parseInt(elem.height.metric.split("-")[0]),
-        weight_max_kg: parseInt(elem.height.metric.split("-")[1]),
+        weight_min_kg: parseInt(elem.weight.metric.split("-")[0]),
+        weight_max_kg: parseInt(elem.weight.metric.split("-")[1]),
         lifeSpan: elem.life_span, 
         created: false, 
         temperament: elem.temperament? elem.temperament.split(", ").join(", "):["No tiene temperamento"],
@@ -70,11 +70,11 @@ const getDogById = async (id, source) => {
             return {
                 id: elem.id,
                 name: elem.name, 
-                image: elem.image.url,
+                image: `https://cdn2.thedogapi.com/images/${elem.reference_image_id}.jpg`,
                 height_min_cms: parseInt(elem.height.metric.split("-")[0]),
                 height_max_cms: parseInt(elem.height.metric.split("-")[1]),
-                weight_min_kg: parseInt(elem.height.metric.split("-")[0]),
-                weight_max_kg: parseInt(elem.height.metric.split("-")[1]),
+                weight_min_kg: parseInt(elem.weight.metric.split("-")[0]),
+                weight_max_kg: parseInt(elem.weight.metric.split("-")[1]),
                 lifeSpan: elem.life_span, 
                 created: false, 
                 temperament: elem.temperament? elem.temperament.split(", "):["No tiene temperamento"],
@@ -139,7 +139,7 @@ const getDogByName = async (name) => {
 
     const filteredApi = apiDogs.filter((dog)=> regex.test(dog.name)); 
 
-    return [...dataBaseDogs.flat(Infinity), ...filteredApi]
+    return [...dataBaseDogs, ...filteredApi]
 }
 
 

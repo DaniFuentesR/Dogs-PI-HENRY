@@ -23,7 +23,7 @@ const location = useLocation();
   return (
     <div className="App">
 
-      {location.pathname !== "/" && <NavBar/>} {/* Este es un hook de react para que la navbar me aparezca solamente donde lo necesito */}
+      {location.pathname !== "/" && <NavBar/>} 
       <Route exact path="/" render = {()=> <Landing/>}/>
       <Route exact path="/home" render = {()=> <Home/>}/>
       <Route exact path="/detail" render = {()=> <Detail/>}/>

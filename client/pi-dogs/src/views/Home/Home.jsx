@@ -1,7 +1,7 @@
 import CardsContainer from "../../Components/CardsContainer/CardsContainer";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDogs, filterByTemperament, filteredByCreation, clearFilters } from "../../Redux/actions";
+import { getDogs, filterByTemperament, filteredByCreation, clearFilters, orderByName} from "../../Redux/actions";
 import style from "./Home.module.css"
 
 
@@ -14,9 +14,19 @@ const Home = () => {
     const filter = useSelector ((state)=>state.filter)
     const [temperaments, setTemperaments] = useState(""); 
     const [filterType, setFilterType] = useState(""); 
+    const [orden, setOrden] = useState("")
 
 
     // ORDENAMIENTO /> 
+
+    const handleSort = (event) => {
+
+        const value = event.target.value
+
+        event.preventDefault(); 
+        dispatch(orderByName(value))
+        setOrden(`Orden ${value}`)
+    }
 
 
 
@@ -136,8 +146,13 @@ const Home = () => {
 
             <button onClick={()=>filtersCreated(false)}> Filtrar por antiguos </button>
 
-            <button onClick={resetFilter}>Limpiar Filtros</button>
+            <button onClick={resetFilter}>Order</button>
                 {filterType && <p>{filterType}</p>}
+
+            <select onChange={handleSort}>
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
+            </select>
 
 
         </div>

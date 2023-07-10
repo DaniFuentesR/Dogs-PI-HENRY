@@ -1,15 +1,17 @@
 const axios = require ("axios"); 
 const {Temperament} = require ("../db"); 
+const {API_KEY} = process.env; 
 
 
 const getTemperaments = async () => {
 
+    const url = "https://api.thedogapi.com/v1/breeds"; 
+    const requestUrl = `${url}?api_key=${API_KEY}`; 
     
+    const apiDogsRaw = (await axios.get(requestUrl)).data; 
 
-    const response = await axios.get("https://api.thedogapi.com/v1/breeds");
-    const url = response.data
 
-    const infoDogs = url.map ((dog) => dog.temperament); 
+    const infoDogs = apiDogsRaw.map ((dog) => dog.temperament); 
     
 
     const allTemperaments = infoDogs.join(", "); 
@@ -19,8 +21,7 @@ const getTemperaments = async () => {
 
 
     const temperaments = temperamentsFiltered.map((temperament) => ({
-
-        // id: index + 1, 
+ 
         name: temperament
     })); 
 

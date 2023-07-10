@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import style from "./NavBar.module.css"
 import { useDispatch } from "react-redux";
 import SearchBar from "../SearchBar/SearchBar"; 
+import { useSelector } from "react-redux"
 
 import { searchDog, clearFilters } from "../../Redux/actions";
 
@@ -25,7 +26,7 @@ const  NavBar = () => {
             
             <div className={style.NavBarLeft}>
                 <Link to= "/home" className={`${style.NoUnderline}`} onClick={clearFiltersHandler} >HOME</Link>
-                {/* disabled={searchResults.length === 0} */}
+                
                 <Link to= "/create" className={`${style.NoUnderline} ${style.FormButton}`}>CREATE DOG</Link>
             </div>
 
