@@ -52,7 +52,7 @@ const createDogHandler = async (req, res) => {
 
       const temperamentBd = await Temperament.findAll({where: {name: temperaments}})
       await newDog.addTemperament(temperamentBd);
-      res.status(201).json("Perro creado con éxito");
+      res.status(201).json(newDog);
     } catch (error) {
       res.status(400).json({ error: "Error al crear el Perro" });
     }
