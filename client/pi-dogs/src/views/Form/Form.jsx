@@ -8,10 +8,11 @@ import style from "./Form.module.css"
 
 const validate = (input) => {
     let errors = {};
+    const nameRegex = /^[A-Za-z\s]+$/;
 
     if(!input.name) {
         errors.name = "Nombre Obligatorio"
-    } else if (typeof input.name !== "string") {
+    } else if (!nameRegex.test(input.name)) {
         errors.name = "Nombre deben ser únicamente letras"
     } else if (Number(!input.height_min_cms)) {
         errors.height_min_cms = "Altura mínima obligatoria"
