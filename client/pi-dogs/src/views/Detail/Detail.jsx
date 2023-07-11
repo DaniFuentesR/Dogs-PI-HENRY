@@ -36,8 +36,8 @@ const Detail = () => {
       <img src={image} alt={name} />
       <p>Height Min: {height_min_cms} cms</p>
       <p>Height Max: {height_max_cms} cms</p>
-      <p>Weight Min kg: {weight_min_kg} kg</p>
-      <p>Weight Max kg: {weight_max_kg} kg</p>
+      <p>Weight Min: {weight_min_kg} kg</p>
+      <p>Weight Max: {weight_max_kg} kg</p>
       <p>Temperament: {temperament}</p>
       <p>Lifespan: {lifeSpan} years</p>
       <button onClick={goBack}>Volver</button>

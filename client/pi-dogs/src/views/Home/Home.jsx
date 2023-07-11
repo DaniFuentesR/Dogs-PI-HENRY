@@ -1,7 +1,7 @@
 import CardsContainer from "../../Components/CardsContainer/CardsContainer";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDogs, filterByTemperament, filteredByCreation, clearFilters, orderByName} from "../../Redux/actions";
+import { getDogs, filterByTemperament, filteredByCreation, clearFilters, orderByName, orderByWeight} from "../../Redux/actions";
 import style from "./Home.module.css"
 
 
@@ -25,6 +25,15 @@ const Home = () => {
 
         event.preventDefault(); 
         dispatch(orderByName(value))
+        setOrden(`Orden ${value}`)
+    }
+
+    const handleSorted = (event) => {
+
+        const value = event.target.value
+
+        event.preventDefault(); 
+        dispatch(orderByWeight(value))
         setOrden(`Orden ${value}`)
     }
 
@@ -153,8 +162,10 @@ const Home = () => {
                 <option value="asc">Ascendente</option>
                 <option value="desc">Descendente</option>
             </select>
-
-
+            <select onChange={handleSorted}>
+                <option value="maxW">Menor peso</option>
+                <option value="minW">Mayor Peso</option>
+            </select>
         </div>
 
             <CardsContainer dogs={filter ? itemsFiltered : item} />

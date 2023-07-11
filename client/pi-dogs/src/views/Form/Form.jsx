@@ -1,6 +1,6 @@
 import React, {useState, useEffect}from "react";
-import {Link, useHistory} from "react-router-dom";
 import { postDog, getTemperaments } from "../../Redux/actions";
+import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux"; 
 import style from "./Form.module.css"
 
@@ -50,8 +50,8 @@ const CreateDog  = () => {
 
     const dispatch = useDispatch(); 
     const temperaments = useSelector((state)=>state.temperaments); 
-    const history = useHistory(); 
     const [errors, setErrors] = useState({})
+    const history = useHistory(); 
 
       
 
@@ -103,6 +103,7 @@ const CreateDog  = () => {
         temperaments: [],
         }); 
         history.push("/home"); 
+
     }
 
     const disable = () => {

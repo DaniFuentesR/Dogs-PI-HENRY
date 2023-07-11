@@ -7,6 +7,7 @@ export const CLEAR_FILTERS = "CLEAR_FILTERS";
 export const SEARCH_DOGS = "SEARCH_DOGS"; 
 export const ORDER_BY_NAME = "ORDER_BY_NAME"
 export const GET_TEMPERAMENTS = "GET_TEMPERAMENTS"
+export const ORDER_BY_WEIGHT = "ORDER_BY_WEIGHT"
 
 export const getDogs = () => {
 
@@ -89,6 +90,15 @@ export const orderByName = (name) => {
 
             type: ORDER_BY_NAME,
             payload: name 
+        })
+    }
+}
+
+export const orderByWeight = ( weight_max_kg) => {
+    return async function (dispatch) {
+        return dispatch ({
+            type: ORDER_BY_WEIGHT, 
+            payload: weight_max_kg
         })
     }
 }

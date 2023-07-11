@@ -21,8 +21,8 @@ const CardsContainer = ({dogs}) => {
                 image= {dog.image}
                 height_min_cms= {dog.height_min_cms}
                 height_max_cms = {dog.height_max_cms}
-                weight_min_kg = {dog.weight_min_kg}
-                weight_max_kg = {dog.weight_max_kg}
+                weight_min_kg = {dog.weight_min_kg ? dog.weight_min_kg : "-"}
+                weight_max_kg = {dog.weight_max_kg ? dog.weight_max_kg : "-"}
                 temperament = {dog.temperament}
                 lifeSpan={dog.lifeSpan}
                 />

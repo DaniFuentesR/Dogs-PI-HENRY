@@ -1,4 +1,4 @@
-import {GET_DOGS, FILTER_TEMPERAMENT, FILTER_CREATED, CLEAR_FILTERS, SEARCH_DOGS, ORDER_BY_NAME, GET_TEMPERAMENTS} from "./actions"; 
+import {GET_DOGS, FILTER_TEMPERAMENT, FILTER_CREATED, CLEAR_FILTERS, SEARCH_DOGS, ORDER_BY_NAME, GET_TEMPERAMENTS, ORDER_BY_WEIGHT} from "./actions"; 
 
 const initialState = {
     
@@ -96,6 +96,34 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state, 
                 dogs: sortedArr
+            }
+
+        case ORDER_BY_WEIGHT:
+            
+            let sortedArray = action.payload === "maxW" ?
+            state.dogs.sort (function (a,b){
+
+                if(a.weight_min_kg > b.weight_min_kg) {
+                    return 1
+                }
+                if(b.weight_min_kg > a.weight_min_kg) {
+                    return -1
+                }
+                return 0
+            }) : 
+            state.dogs.sort(function(a,b){
+                if (a.weight_max_kg > b.weight_max_kg){
+                    return -1
+                }
+                if(b.weight_max_kg > a.weight_max_kg){
+                    return 1
+                }
+                return 0
+            })
+
+            return {
+                ...state, 
+                dogs: sortedArray
             }
         
         case GET_TEMPERAMENTS:

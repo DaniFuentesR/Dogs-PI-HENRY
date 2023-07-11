@@ -10,7 +10,7 @@ import { searchDog, clearFilters } from "../../Redux/actions";
 
 const  NavBar = () => {
     
-    // const searchResults = useSelector((state) => state.searchResults); 
+    
  
 
     const dispatch = useDispatch(); 
