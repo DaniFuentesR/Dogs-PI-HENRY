@@ -1,16 +1,59 @@
-import { useState } from "react";
+import React, {useState, useEffect}from "react";
+import {Link, useHistory} from "react-router-dom";
+import { postDog, getTemperaments } from "../../Redux/actions";
+import {useDispatch, useSelector} from "react-redux"; 
 import style from "./Form.module.css"
-import axios from "axios";
-import { useEffect } from "react";
 
 
 
+const validate = (input) => {
+    let errors = {};
 
-const Form = () => {
+    if(!input.name) {
+        errors.name = "Nombre Obligatorio"
+    } else if (typeof input.name !== "string") {
+        errors.name = "Nombre deben ser únicamente letras"
+    } else if (Number(!input.height_min_cms)) {
+        errors.height_min_cms = "Altura mínima obligatoria"
+    } else if (Number(!input.height_max_cms)) {
+        errors.height_max_cms = "Altura máxima obligatoria"
+    } else if (Number(input.height_max_cms) < Number(input.height_min_cms)) {
+        errors.height_max_cms = "Altura máxima no puede ser menor a la altura mínima"
+    } else if (Number(!input.weight_min_kg)) {
+        errors.weight_min_kg = "Peso mínimo obligatorio"
+    } else if (Number(!input.weight_max_kg)) {
+        errors.weight_max_kg = "Peso máximo Obligatorio"
+    } else if(Number(input.weight_max_kg) < Number(input.weight_min_kg)) {
+        errors.weight_max_kg = "Peso máximo no puede ser menor al peso mínimo"
+    } else if (Number(!input.lifeSpan)) {
+        errors.lifeSpan = "Esperanza de vida Obligatoria"
+    } else if (Number(input.lifeSpan) > 25) {
+        errors.lifeSpan = "Ingrese una esperanza de vida válida"
+    } else if (Number(input.height_min_cms) <= 0) {
+        errors.height_min_cms = "La altura no puede ser menor o igual a cero"
+    } else if (Number(input.weight_min_kg) <= 0) {
+        errors.weight_min_kg = "El peso no puede ser menor o igual a cero"
+    } else if (Number(input.lifeSpan) <= 0) {
+        errors.lifeSpan = "La esperanza de vida no puede ser menor o igual a cero"
+    } else if (input.temperaments.length === 0) {
+        errors.temperaments = "Escoja al menos un temperamento"
+    }
 
-   
+    return errors; 
+}
 
-    const [formData, setFormData] = useState({
+
+
+const CreateDog  = () => {
+
+    const dispatch = useDispatch(); 
+    const temperaments = useSelector((state)=>state.temperaments); 
+    const history = useHistory(); 
+    const [errors, setErrors] = useState({})
+
+      
+
+    const [input, setInput] = useState({
         name: "",
         image: "",
         height_min_cms: "", 
@@ -18,206 +61,143 @@ const Form = () => {
         weight_min_kg: "",
         weight_max_kg: "",  
         lifeSpan: "", 
-        temperaments: "", 
+        temperaments: [], 
     }); 
 
-    
-    
-    const [errors, setErrors] = useState({
-        name: "Campo Obligatorio",
-        height_min_cms: "Campo Obligatorio", 
-        height_max_cms: "Campo Obligatorio",
-        weight_min_kg: "Campo Obligatorio",
-        weight_max_kg: "Campo Obligatorio",  
-        lifeSpan: "Campo Obligatorio", 
-        temperaments: "Campo Obligatorio", 
-    }); 
 
-    const [allTemperaments, setAllTemperaments] = useState([]);
 
-    useEffect(() => {
-        
-        axios.get("http://localhost:3006/temperament")
-        .then((response) => {
-            setAllTemperaments(response.data)
+
+    const handleChange = (event) => {
+        setInput ({
+            ...input,
+            [event.target.name] : event.target.value
         })
-        .catch(error => {
-            console.log(error);
-        });
-    }, []);
-    
-    
-    const validate = (formData, name) => {
-        
-        if (name === "name") {
-            if (formData.name !== "") setErrors({...errors, name: ""})
-            else setErrors({...errors, name: "Campo Obligatorio"})
-            return; 
-        }
 
-        if (name === "height_min_cms") {
-            if (formData.height_min_cms !== "") setErrors({...errors, height_min_cms: ""})
-            else setErrors({...errors, height_min_cms: "Campo Obligatorio"})
-            return; 
-        }
-        
-        if (name === "height_max_cms") {
-            if (formData.height_max_cms !== "") setErrors({...errors, height_max_cms: ""})
-            else setErrors({...errors, height_max_cms: "Campo Obligatorio"})
-            return; 
-        }
-        
-        if (name === "weight_min_kg") {
-            if (formData.weight_min_kg !== "") setErrors({...errors, weight_min_kg: ""})
-            else setErrors({...errors, weight_min_kg: "Campo Obligatorio"})
-            return; 
-        }
-        
-        if (name === "weight_max_kg") {
-            if (formData.weight_max_kg !== "") setErrors({...errors, weight_max_kg: ""})
-            else setErrors({...errors, weight_max_kg: "Campo Obligatorio"})
-            return; 
-        }
-        
-        if (name === "lifeSpan") {
-            if (formData.lifeSpan !== "") setErrors({...errors, lifeSpan: ""})
-            else setErrors({...errors, lifeSpan: "Campo Obligatorio"})
-            return; 
-        }
-    
-      
-        if (name === "temperaments") {
-            if (formData.temperaments !== null && formData.temperaments !== undefined) {
-              setErrors({ ...errors, temperaments: "" });
-            } else {
-              setErrors({ ...errors, temperaments: "Campo Obligatorio" });
-            }
-            return;
-          }
-        
-    }; 
-    
-    
-    const changeHandler = (event) => {
-        const property = event.target.name; 
-        const value = event.target.value
-
-        if (property === "temperament") {
-            const selectedTemperament = allTemperaments.find(
-              (temperament) => temperament.name === value
-            );
-            setFormData({ ...formData, temperaments: selectedTemperament });
-          } else {
-            setFormData({ ...formData, [property]: value });
-          }
-
-        validate ({
-            ...formData, 
-            [property]:value
-        }, property); 
-        
-        
+        setErrors (validate({
+            ...input,
+            [event.target.name]: event.target.value
+        }))
     }
-    
-    const submitHandler = (event) => { 
-        event.preventDefault()
-        
 
+    const handleSelect = (event) => {
+        setInput({
+            ...input,
+            temperaments: [...input.temperaments, event.target.value]
+        })
+    }
 
-            try {
-                axios.post("http://localhost:3006/dogs/", formData)
-                alert("Perro creado con éxito")
-            } catch (error) {
-                alert(error.response.data.error)
-            }
+    const handleSubmit = (event) => {
+        event.preventDefault(); 
+        dispatch(postDog(input)); 
+        alert ("Perro creado con éxito"); 
+        setInput({
+        name: "",
+        image: "",
+        height_min_cms: "", 
+        height_max_cms: "",
+        weight_min_kg: "",
+        weight_max_kg: "",  
+        lifeSpan: "", 
+        temperaments: [],
+        }); 
+        history.push("/home"); 
     }
 
     const disable = () => {
-        let disabled = true;
-        for (let error in errors) {
-            if (errors[error] === "") disabled = false; 
-            else {
-                disabled = true;
-                break
-            }
-        }
-        return disabled
-    }
+        return Object.keys(errors).length !== 0;
+      };
+
+ 
+
+
+
+    useEffect(()=> {
+        dispatch(getTemperaments());
+    }, [dispatch])
+
+    useEffect(() => {
+        setErrors(validate(input));
+      }, [input]);
     
+      useEffect(() => {
+        setErrors(validate(input));
+      }, []);
+
     return (
-        <form onSubmit={submitHandler} className={style.Form}>
+        <div className={style.Form}>
+            <Link to="/home"><button>Volver</button></Link>
+            <h1>Crear Perro</h1>
 
-            <label>
-                <label>Name </label>
-                <input type="text" value={formData.name} onChange={changeHandler} name="name" placeholder="Insert Name"/>
-                {errors.name}
+            <form onSubmit={(e)=>handleSubmit(e)}>
+                <div>
+                    <label>Name</label>
+                    <input type="text" value={input.name} name="name" onChange={(e)=>handleChange(e)}/>
+                    {errors.name && (<p>{errors.name}</p>)}
+                </div>
 
-            </label>
+                <div>
+                    <label>Image</label>
+                    <input type="text" value={input.image} name="image" onChange={(e)=>handleChange(e)}/>
+                </div>
 
-            <label>
-                <label>Image </label>
-                <input type="text" value={formData.image} onChange={changeHandler} name="image" placeholder="Insert image url"/>
-                
+                <div>
+                    <label>Height Min</label>
+                    <input type="number" value={input.height_min_cms} name="height_min_cms" onChange={(e)=>handleChange(e)}/>
+                    {errors.height_min_cms && (<p>{errors.height_min_cms}</p>)}
+                </div>
 
-            </label>
+                <div>
+                    <label>Height Max</label>
+                    <input type="number" value={input.height_max_cms} name="height_max_cms" onChange={(e)=>handleChange(e)}/>
+                    {errors.height_max_cms && (<p>{errors.height_max_cms}</p>)}
+                </div>
 
-            <label>
+                <div>
+                    <label>Weight Min</label>
+                    <input type="number" value={input.weight_min_kg} name="weight_min_kg" onChange={(e)=>handleChange(e)}/>
+                    {errors.weight_min_kg && (<p>{errors.weight_min_kg}</p>)}
+                </div>
 
-                <label>Min Height </label>
-                <input type="Number" value={formData.height_min_cms} onChange={changeHandler} name="height_min_cms" placeholder="Insert Minimum Height" />
-                {errors.height_min_cms}
-            </label>
+                <div>
+                    <label>Weight Max</label>
+                    <input type="number" value={input.weight_max_kg} name="weight_max_kg" onChange={(e)=>handleChange(e)}/>
+                    {errors.weight_max_kg && (<p>{errors.weight_max_kg}</p>)}
+                </div>
 
-            <label>
+                <div>
+                    <label>Life Span Years</label>
+                    <input type="number" value={input.lifeSpan} name="lifeSpan" onChange={(e)=>handleChange(e)}/>
+                    {errors.lifeSpan && (<p>{errors.lifeSpan}</p>)}
+                </div>
 
-                <label>Max Height </label>
-                <input type="Number" value={formData.height_max_cms} onChange={changeHandler} name="height_max_cms" placeholder="Insert Maximum Height" />
-                {errors.height_max_cms}
-                </label>
-
-            <label>
-
-                <label> Min Weight </label>
-                <input type="Number" value={formData.weight_min_kg} onChange={changeHandler} name="weight_min_kg" placeholder="Insert Minimum Weight"/>
-                {errors.weight_min_kg}
-            </label>
-
-            <label>
-
-                <label>Max Weight </label>
-                <input type="Number" value={formData.weight_max_kg} onChange={changeHandler} name="weight_max_kg" placeholder="Insert Maximum Weight"/>
-                {errors.weight_max_kg}
-                </label>
-
-            <label>
-
-                <label>LifeSpan </label>
-                <input type="text" value={formData.lifeSpan} onChange={changeHandler} name="lifeSpan" placeholder="Insert Life Span"/>
-                {errors.lifeSpan}
-            </label>
-
-            <label>
-
-                <label>Temperament </label>
-
-                <select name="temperaments" onChange={changeHandler} value={formData.temperaments}>
+                <div>
+                    <label>Temperaments</label>
+                    <select onChange={(e) => handleSelect(e)} value={input.temperaments}>
                     <option value="">Seleccione un temperamento</option>
-                        {allTemperaments.map((temperament) => (
-                        <option key={temperament.id} value={temperament.name}>
-                        {temperament.name}
-                    </option>
-                ))}
-                 {errors.temperaments}
-                </select>
+                        {temperaments.map((temp) => (
+                            <option value={temp.name}>
+                                {temp.name}
+                            </option>
+                        ))}
+                    </select>
 
-            </label>
+                    <ul><li>{input.temperaments.map(temp => temp +" ")}</li></ul>
+                    {errors.temperaments && (<p>{errors.temperaments}</p>)}
 
-            <label>
-                <button type="submit" disabled={disable()}>Create Breed</button>
-            </label>
-        </form>
+                </div>
+
+                <button type="submit" disabled={disable()}>Crear Perro</button>
+                
+            </form>
+
+
+        </div>
     )
-}; 
 
-export default Form; 
+}
+
+
+
+
+export default CreateDog; 
 

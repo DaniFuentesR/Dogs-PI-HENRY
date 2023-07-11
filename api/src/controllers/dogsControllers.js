@@ -77,7 +77,7 @@ const getDogById = async (id, source) => {
                 weight_max_kg: parseInt(elem.weight.metric.split("-")[1]),
                 lifeSpan: elem.life_span, 
                 created: false, 
-                temperament: elem.temperament? elem.temperament.split(", "):["No tiene temperamento"],
+                temperament: elem.temperament? elem.temperament.split(", ").join(", "):["No tiene temperamento"],
     }
     
     
@@ -128,6 +128,21 @@ const getDogByName = async (name) => {
                 through: {attributes: []},
     }}); 
 
+    let response = await dataBaseDogs.map(dog => {
+        return {
+            id: dog.id,
+            name: dog.name,
+            image: dog.image,
+            height_min_cms: dog.height_min_cms,
+            height_max_cms: dog.height_max_cms,
+            weight_min_kg: dog.weight_min_kg,
+            weight_max_kg: dog.weight_max_kg,
+            lifeSpan: dog.lifeSpan,
+            temperament: dog.Temperaments? dog.Temperaments.map((temperament=>temperament.name)).join(", "): "",
+            created: dog.created
+      }
+    })
+
             
     
     const url = "https://api.thedogapi.com/v1/breeds"
@@ -139,7 +154,7 @@ const getDogByName = async (name) => {
 
     const filteredApi = apiDogs.filter((dog)=> regex.test(dog.name)); 
 
-    return [...dataBaseDogs, ...filteredApi]
+    return [...response, ...filteredApi]
 }
 
 

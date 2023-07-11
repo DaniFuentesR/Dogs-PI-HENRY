@@ -1,4 +1,4 @@
-import {GET_DOGS, FILTER_TEMPERAMENT, FILTER_CREATED, CLEAR_FILTERS, SEARCH_DOGS, ORDER_BY_NAME} from "./actions"; 
+import {GET_DOGS, FILTER_TEMPERAMENT, FILTER_CREATED, CLEAR_FILTERS, SEARCH_DOGS, ORDER_BY_NAME, GET_TEMPERAMENTS} from "./actions"; 
 
 const initialState = {
     
@@ -7,6 +7,7 @@ const initialState = {
     filter: false,
     temperaments: [],
     searchResults: [],
+    
 
 
     
@@ -96,11 +97,27 @@ const rootReducer = (state = initialState, action) => {
                 ...state, 
                 dogs: sortedArr
             }
+        
+        case GET_TEMPERAMENTS:
+            return {
+                ...state, 
+                temperaments: action.payload
+        
+            }
+
+        case "POST_DOG":
+            return{
+                ...state,
+                
+            }
 
 
         default: 
             return {...state}; 
     }
+
+    
+
 };
 
 export default rootReducer; 

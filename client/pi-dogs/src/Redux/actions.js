@@ -6,6 +6,7 @@ export const FILTER_CREATED = "FILTER_CREATED"
 export const CLEAR_FILTERS = "CLEAR_FILTERS"; 
 export const SEARCH_DOGS = "SEARCH_DOGS"; 
 export const ORDER_BY_NAME = "ORDER_BY_NAME"
+export const GET_TEMPERAMENTS = "GET_TEMPERAMENTS"
 
 export const getDogs = () => {
 
@@ -16,7 +17,7 @@ export const getDogs = () => {
         const apiData = await axios.get("http://localhost:3006/dogs/"); 
         const dogs = apiData.data; 
 
-        dispatch(
+       return dispatch(
             {
              type: GET_DOGS, 
              payload: dogs
@@ -33,10 +34,11 @@ export const getDogs = () => {
 
 export const searchDog = (name) => {
     return async function (dispatch) {
+
         try {
             const apiData = await axios.get(`http://localhost:3006/dogs/?name=${name}`);
 
-            dispatch({
+            return dispatch({
                 type: SEARCH_DOGS,
                 payload: apiData.data
             })
@@ -53,7 +55,7 @@ export const filterByTemperament = (temperament) => {
 
     return async function  (dispatch) {
 
-        dispatch(
+        return dispatch(
             {
              type: FILTER_TEMPERAMENT, 
              payload: temperament
@@ -66,7 +68,7 @@ export const filterByTemperament = (temperament) => {
 export const filteredByCreation = (created) => {
     return async function (dispatch) {
 
-        dispatch ({
+        return dispatch ({
             type: FILTER_CREATED,
             payload: created
         })
@@ -83,11 +85,47 @@ export const clearFilters = () => {
 
 export const orderByName = (name) => {
     return async function (dispatch) {
-        dispatch ({
+        return dispatch ({
 
             type: ORDER_BY_NAME,
             payload: name 
         })
     }
 }
+
+export const postDog = (payload) => {
+    return async function (dispatch) {
+        
+    
+        const apiData = await axios.post("http://localhost:3006/dogs/", payload); 
+        return apiData; 
+        
+
+    }    
+}
+
+
+export const getTemperaments = () => {
+
+    return async function  (dispatch) {
+
+        try {
+
+        const apiData = await axios.get("http://localhost:3006/temperament/"); 
+        const dogs = apiData.data; 
+
+        return dispatch(
+            {
+             type: GET_TEMPERAMENTS, 
+             payload: dogs
+            }
+        )
+        } catch (error) {
+            alert("No se encontraron temperamentos")
+        }
+
+        
+    };
+
+}; 
 

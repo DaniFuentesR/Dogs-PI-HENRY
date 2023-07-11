@@ -39,7 +39,7 @@ const Detail = () => {
       <p>Weight Min kg: {weight_min_kg} kg</p>
       <p>Weight Max kg: {weight_max_kg} kg</p>
       <p>Temperament: {temperament}</p>
-      <p>Lifespan: {lifeSpan}</p>
+      <p>Lifespan: {lifeSpan} years</p>
       <button onClick={goBack}>Volver</button>
         
         </div>
