@@ -8,12 +8,13 @@ import {searchDog} from "../../Redux/actions.js"
 export default function SearchBar() {
    
 
-
+   
    const [dogSearch, setDogSearch] = useState("")
    const dispatch = useDispatch(); 
 
    const handlerSearch = () => {
       dispatch(searchDog(dogSearch)); 
+      setDogSearch("")
       
    
    }

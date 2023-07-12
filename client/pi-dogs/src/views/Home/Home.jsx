@@ -103,7 +103,9 @@ const Home = () => {
 
         if(temperaments.trim() !== "")
         dispatch(filterByTemperament(temperaments.split(" ")))
+        setTemperaments("");
         setFilterType(`Filtrado por temperamentos: ${temperaments}`); 
+        
     }
 
     const temperamentHandler = (event) => {
@@ -155,14 +157,20 @@ const Home = () => {
 
             <button onClick={()=>filtersCreated(false)}> Filtrar por antiguos </button>
 
-            <button onClick={resetFilter}>Order</button>
+            <button onClick={resetFilter}>Limpiar Filtros</button>
                 {filterType && <p>{filterType}</p>}
 
+            <button onClick={resetFilter}>Order</button>
+                
+
+
             <select onChange={handleSort}>
+                <option>Selecciona</option>
                 <option value="asc">Ascendente</option>
                 <option value="desc">Descendente</option>
             </select>
             <select onChange={handleSorted}>
+                <option>Selecciona</option>
                 <option value="maxW">Menor peso</option>
                 <option value="minW">Mayor Peso</option>
             </select>
